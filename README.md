@@ -29,6 +29,22 @@
 
 ---
 
+## Development
+
+Start app:
+
+```
+$ dotnet run --project KataUsers
+```
+
+## Tests
+
+Run unit tests:
+
+```
+$ dotnet test
+```
+
 ## Resources
 
 
