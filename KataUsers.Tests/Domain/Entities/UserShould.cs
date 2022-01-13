@@ -10,9 +10,9 @@ namespace KataUsers.Tests.Domain.Entities
         [Fact]
         public void not_return_errors_if_all_fields_are_valid()
         {
-            var password = new User("Jorge Sánchez", "xurxodev@gmail.com", "12345678A");
+            var user = new User("Jorge Sánchez", "xurxodev@gmail.com", "12345678A");
 
-            Assert.NotNull(password);
+            Assert.NotNull(user);
         }
 
         [Fact]
@@ -78,6 +78,29 @@ namespace KataUsers.Tests.Domain.Entities
             Assert.Single(exception.Errors[0].errors);
             Assert.Equal("Password", exception.Errors[0].field);
             Assert.Equal(Errors.ValidationErrorKey.INVALID_FIELD, exception.Errors[0].errors[0]);
+        }
+
+        [Fact]
+        public void return_be_equal_for_instances_with_the_same_property_values()
+        {
+            var guid = Guid.NewGuid();
+
+            var user1 = new User("Jorge Sánchez", "xurxoexam@gmail.com", "12345678A", guid);
+            var user2 = new User("Jorge Sánchez Fernandez", "xurxodev@gmail.com", "12345678A", guid);
+
+            Assert.Equal(user1, user2);
+        }
+
+        [Fact]
+        public void return_not_be_equal_for_instances_with_the_same_property_values()
+        {
+
+            var guid = Guid.NewGuid();
+
+            var user1 = new User("Jorge Sánchez", "xurxoexam@gmail.com", "12345678A", Guid.NewGuid());
+            var user2 = new User("Jorge Sánchez Fernandez", "xurxodev@gmail.com", "12345678A", Guid.NewGuid());
+
+            Assert.NotEqual(user1, user2);
         }
     }
 }

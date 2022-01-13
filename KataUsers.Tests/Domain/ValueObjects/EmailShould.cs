@@ -12,9 +12,9 @@ namespace KataUsers.Tests.Domain.ValueObjects
         public void return_email_if_value_is_valid()
         {
             var emailValue = "xurxodev@gmail.com";
-            var password = new Email(emailValue);
+            var email = new Email(emailValue);
 
-            Assert.NotNull(password);
+            Assert.NotNull(email);
         }
 
         [Fact]
@@ -44,6 +44,27 @@ namespace KataUsers.Tests.Domain.ValueObjects
             Assert.Single(exception.Errors);
             Assert.Single(exception.Errors[0].errors);
             Assert.Equal(Errors.ValidationErrorKey.INVALID_FIELD, exception.Errors[0].errors[0]);
+        }
+
+        [Fact]
+        public void return_be_equal_for_instances_with_the_same_property_values()
+        {
+
+            var email1 = new Email("xurxodev@gmail.com");
+            var email2 = new Email("xurxodev@gmail.com");
+
+            Assert.Equal(email1, email2);
+        }
+
+
+        [Fact]
+        public void return_not_be_equal_for_instances_with_the_same_property_values()
+        {
+
+            var email1 = new Email("xurxodev@gmail.com");
+            var email2 = new Email("xurxodev@eample.com");
+
+            Assert.NotEqual(email1, email2);
         }
     }
 }

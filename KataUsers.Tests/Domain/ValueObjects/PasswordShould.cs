@@ -45,5 +45,26 @@ namespace KataUsers.Tests.Domain.ValueObjects
             Assert.Single(exception.Errors[0].errors);
             Assert.Equal(Errors.ValidationErrorKey.INVALID_FIELD, exception.Errors[0].errors[0]);
         }
+
+        [Fact]
+        public void return_be_equal_for_instances_with_the_same_property_values()
+        {
+
+            var password1 = new Password("12345678A");
+            var password2 = new Password("12345678A");
+
+            Assert.Equal(password1, password2);
+        }
+
+
+        [Fact]
+        public void return_not_be_equal_for_instances_with_the_same_property_values()
+        {
+
+            var password1 = new Password("12345678A");
+            var password2 = new Password("87654321A");
+
+            Assert.NotEqual(password1, password2);
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace KataUsers.Domain.Entities
         public Email Email { get; private set; }
         public Password Password { get; private set; }
 
-        public User(string name, string email, string password) : base(Guid.NewGuid().ToString())
+        public User(string name, string email, string password, Guid id = new Guid()) : base(id.ToString())
         {
             Email? emailObj;
             List<ValidationError> emailErrors;
