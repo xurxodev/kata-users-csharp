@@ -20,7 +20,7 @@ namespace KataUsers.Domain.UseCases
 
             if (duplicatedUser != null)
             {
-                throw new DuplicateResourceException($"There is already a user with email {user.Email}");
+                throw new DuplicateResourceException($"There is already an user with email {user.Email}");
             }
             else
             {
