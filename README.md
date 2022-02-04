@@ -49,7 +49,9 @@ Run unit tests:
 $ dotnet test
 ```
 
-## Resources
+## Clean Architecture Course
+
+* [Curso Clean Architecture](https://xurxodev.com/curso-clean-architecture)
 
 
 # License
