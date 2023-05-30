@@ -13,24 +13,13 @@ namespace KataUsers.Domain.Entities
 
         public User(string name, string email, string password, Guid id = new Guid()) : base(id.ToString())
         {
-            Email? emailObj;
-            List<ValidationError> emailErrors;
-            Email.TryParse(email, out emailObj, out emailErrors);
-
-            Password? passwordObj;
-            List<ValidationError> passwordErrors;
-            Password.TryParse(password, out passwordObj, out passwordErrors);
-
             var totalErrors = new List<ValidationError>();
-            totalErrors.AddRange(emailErrors);
-            totalErrors.AddRange(passwordErrors);
 
-            var nameRequiredErrors = Validations.ValidateRequired(name);
+            Email? emailObj = CreateEmail(email, totalErrors);
 
-            if (nameRequiredErrors.Count > 0)
-            {
-                totalErrors.Add(new ValidationError() { field = "Name", value = name, errors = nameRequiredErrors });
-            }
+            Password? passwordObj = CreatePassword(password, totalErrors);
+
+            ValidateName(name, totalErrors);
 
             if (totalErrors.Count > 0)
             {
@@ -40,6 +29,38 @@ namespace KataUsers.Domain.Entities
             Name = name;
             Email = emailObj!;
             Password = passwordObj!;
+        }
+
+        private static Password? CreatePassword(string password, List<ValidationError> totalErrors)
+        {
+            Password? passwordObj;
+            List<ValidationError> passwordErrors;
+
+            Password.TryParse(password, out passwordObj, out passwordErrors);
+            totalErrors.AddRange(passwordErrors);
+
+            return passwordObj;
+        }
+
+        private static Email? CreateEmail(string email, List<ValidationError> totalErrors)
+        {
+            Email? emailObj;
+            List<ValidationError> emailErrors;
+
+            Email.TryParse(email, out emailObj, out emailErrors);
+            totalErrors.AddRange(emailErrors);
+
+            return emailObj;
+        }
+
+        private static void ValidateName(string name, List<ValidationError> totalErrors)
+        {
+            var nameRequiredErrors = Validations.ValidateRequired(name);
+
+            if (nameRequiredErrors.Count > 0)
+            {
+                totalErrors.Add(new ValidationError() { field = "Name", value = name, errors = nameRequiredErrors });
+            }
         }
     }
 }
