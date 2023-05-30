@@ -3,6 +3,13 @@ using KataUsers.Domain.Types;
 using KataUsers.Domain.Utils;
 using KataUsers.Domain.ValueObjects;
 
+/*
+  Alternarives to use exceptions in C# to manage errors:
+  - Records: https://event-driven.io/en/union_types_in_csharp/
+  - https://github.com/mcintyre321/OneOf (principal advantage over records is exhaustive checking in compile time)
+  
+*/
+
 namespace KataUsers.Domain.Entities
 {
     public class User : Entity

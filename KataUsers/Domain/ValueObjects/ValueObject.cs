@@ -1,5 +1,11 @@
 namespace KataUsers.Domain.ValueObjects
 {
+
+    /*
+        Why does not use records (c# 9) to define value objects?
+        https://enterprisecraftsmanship.com/posts/csharp-records-value-objects/
+    */
+
     public abstract class ValueObject
     {
         protected static bool EqualOperator(ValueObject left, ValueObject right)
