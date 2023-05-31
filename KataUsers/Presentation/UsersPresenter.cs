@@ -20,63 +20,11 @@ namespace KataUsers.Presentation
         public async Task OnInitialize()
         {
             view.ShowWelcomeMessage();
-            await LoadUsersListAndRequestNew();
+            await LoadUsersAndRequestNew();
         }
 
-        public async Task OnAddUserOptionSelected()
-        {
-            try
-            {
-                var name = view.RequestName() ?? "";
-                var email = view.RequestEmail() ?? "";
-                var passwword = view.RequestPassword() ?? "";
 
-                var user = new User(name, email, passwword);
-
-                await SaveUser(user);
-            }
-            catch (ValidateException ex)
-            {
-                var messages = ex.Errors
-                            .SelectMany(errorsByField =>
-                                errorsByField.errors.Select(err =>
-                                    Errors.ValidationErrorMessages[err](errorsByField.field)
-                                )
-                            );
-                await ShowErrorAndShowListAndRequestNew(String.Join("\n", messages));
-            }
-            catch (System.Exception ex)
-            {
-
-                await ShowErrorAndShowListAndRequestNew(ex.Message);
-            }
-        }
-
-        private async Task SaveUser(User user)
-        {
-            try
-            {
-                await this.saveUserUserCase.execute(user);
-
-                await LoadUsersListAndRequestNew();
-            }
-            catch (DuplicateResourceException ex)
-            {
-                await ShowErrorAndShowListAndRequestNew(ex.Message);
-            }
-            catch (System.Exception ex)
-            {
-                await ShowErrorAndShowListAndRequestNew(ex.Message);
-            }
-        }
-
-        private async Task ShowErrorAndShowListAndRequestNew(string message)
-        {
-            view.ShowError(message);
-            await LoadUsersListAndRequestNew();
-        }
-
-        private async Task LoadUsersListAndRequestNew()
+        private async Task LoadUsersAndRequestNew()
         {
             try
             {
@@ -96,10 +44,55 @@ namespace KataUsers.Presentation
                 this.view.ShowError(ex.Message);
             }
 
-            await OnAddUserOptionSelected();
+            await RequestNewUser();
+        }
+
+        public async Task RequestNewUser()
+        {
+            var name = view.RequestName() ?? "";
+            var email = view.RequestEmail() ?? "";
+            var passwword = view.RequestPassword() ?? "";
+
+
+            await SaveUser(name, email, passwword);
+        }
+
+        private async Task SaveUser(string name, string email, string passwword)
+        {
+            try
+            {
+                var user = new User(name, email, passwword);
+
+                await this.saveUserUserCase.execute(user);
+
+                await LoadUsersAndRequestNew();
+            }
+            catch (ValidateException ex)
+            {
+                var messages = ex.Errors
+                            .SelectMany(errorsByField =>
+                                errorsByField.errors.Select(err =>
+                                    Errors.ValidationErrorMessages[err](errorsByField.field)
+                                )
+                            );
+                await ShowErrorAndShowListAndRequestNew(String.Join("\n", messages));
+            }
+            catch (DuplicateResourceException ex)
+            {
+                await ShowErrorAndShowListAndRequestNew(ex.Message);
+            }
+            catch (System.Exception ex)
+            {
+                await ShowErrorAndShowListAndRequestNew(ex.Message);
+            }
+        }
+
+        private async Task ShowErrorAndShowListAndRequestNew(string message)
+        {
+            view.ShowError(message);
+            await LoadUsersAndRequestNew();
         }
     }
-
 
     public interface IUsersView
     {

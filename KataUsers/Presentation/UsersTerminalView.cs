@@ -15,7 +15,6 @@ namespace KataUsers.Presentation
         public async Task show()
         {
             await presenter.OnInitialize();
-            await presenter.OnAddUserOptionSelected();
         }
 
         public string? RequestName()
@@ -61,7 +60,7 @@ namespace KataUsers.Presentation
 
             users.ForEach(user =>
             {
-                Console.WriteLine($"{ user.Name}- { user.Email}");
+                Console.WriteLine($"{user.Name}- {user.Email}");
             });
         }
 
